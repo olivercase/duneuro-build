@@ -114,7 +114,7 @@ log "running dunecontrol all (long step) — logging to ${BASE}/dunecontrol.log"
 # ── install the duneuro-py extension into the venv ──────────────────────────
 # dunecontrol (above) already builds duneuro-py via dune_enable_all_packages.
 # On macOS the artefact is ``duneuropy.dylib``; Python needs it named ``.so``.
-PYSITE="$(${VENV}/bin/python -c 'import site; print(site.getsitepackages()[0])')"
+PYSITE="$("${VENV}/bin/python" -c 'import site; print(site.getsitepackages()[0])')"
 DUNEUROPY_LIB="$(find "${SRC}/duneuro-py/build-cmake" \
     -name 'duneuropy*.dylib' -o -name 'duneuropy*.so' | head -1)"
 if [[ -z "${DUNEUROPY_LIB}" ]]; then

@@ -1,5 +1,8 @@
 # duneuro-build
 
+[![shellcheck](https://github.com/olivercase/duneuro-build/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/olivercase/duneuro-build/actions/workflows/shellcheck.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Reproducible build recipe for the local **DUNEuro** stack used by the iNOB
 vagus-nerve forward model (see the [`iNOB`](https://github.com/olivercase/iNOB)
 repo). This repo contains **only the build recipe** — scripts, patches, and

@@ -87,7 +87,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DPython3_EXECUTABLE="${BASE}/venv/bin/python" \
       ..
 make -j"${CORES_PER_TASK:-4}"
-PYSITE="$(${BASE}/venv/bin/python -c 'import site; print(site.getsitepackages()[0])')"
+PYSITE="$("${BASE}/venv/bin/python" -c 'import site; print(site.getsitepackages()[0])')"
 cp -r src/duneuropy* "${PYSITE}/" 2>/dev/null || \
     find . -name 'duneuropy*.so' -exec cp {} "${PYSITE}/" \;
 
