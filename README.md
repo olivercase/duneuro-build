@@ -37,9 +37,24 @@ Prerequisites (Homebrew): `eigen gmp metis superlu cmake python@3.11`.
 
 ## Running the forward solve
 
-The build installs `duneuropy` into `$BASE/venv`. Run the iNOB forward solve
-with that interpreter, e.g.:
+The build installs `duneuropy` into `$BASE/venv` (default
+`/Volumes/UCL/duneuro_build/venv`). The forward solve runs from **that** venv,
+so the [`iNOB`](https://github.com/olivercase/iNOB) package must be installed
+into it as well — install it editable so the venv tracks your working copy:
 
 ```bash
-/Volumes/UCL/duneuro_build/venv/bin/vagus-fm-forward --config configs/default.yaml
+BASE=/Volumes/UCL/duneuro_build
+cd /path/to/iNOB
+"$BASE/venv/bin/pip" install --no-deps -e .        # inob + entry points into the venv
+
+# sanity check: duneuropy imports and the pipeline can see it
+"$BASE/venv/bin/python" -c "import duneuropy, inob; print('duneuro + inob OK')"
+
+# run the real solve with that interpreter's console scripts
+"$BASE/venv/bin/inob-forward"                       # MEG leadfield
+"$BASE/venv/bin/inob-calibrate"                     # self-contained sphere solve (quick check)
 ```
+
+> The editable install records an **absolute** path to the iNOB checkout. If you
+> later rename or move the iNOB repo, re-run `pip install --no-deps -e .` from
+> the new location — otherwise `import inob` breaks while `duneuropy` still works.

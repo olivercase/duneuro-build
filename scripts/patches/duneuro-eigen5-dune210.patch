@@ -32,8 +32,8 @@ index 90fe9d3..954d87e 100644
 -  // But since at the point of programming this function the Ubuntu package repository installs Eigen 3.3,
 -  // which does not support passing these arguments as template parameters, it will stay for now.
 -  Eigen::VectorXd solution = lhsMatrix.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
-+  // Eigen 5 removed the runtime-flag overload; use the template-parameter form (Eigen ≥ 3.4).
-+  Eigen::VectorXd solution = lhsMatrix.jacobiSvd<Eigen::ComputeThinU | Eigen::ComputeThinV>().solve(rhs);
++  // Keep the runtime-flag overload: the Eigen shipped with DUNE here provides jacobiSvd(unsigned), not the jacobiSvd<flags>() template form.
++  Eigen::VectorXd solution = lhsMatrix.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
  
    // in our multilayer sphere experiments the lhs matrix seemed to always be rank deficient. The SVD then sometimes included very
    // small singular values in the pseudoinverse, leading to what one would call "ghost sources" in the inverse problem. By this we mean
