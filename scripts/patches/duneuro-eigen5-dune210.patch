@@ -5,7 +5,7 @@ index e3ce560..f5d7f02 100644
 @@ -48,13 +48,10 @@ namespace duneuro
        }
      }
- 
+
 -    void evaluate(const typename GridView::template Codim<dim>::Entity& hostEntity,
 -                  unsigned int corner, Dune::FieldVector<double, dim>& y) const
 -    {
@@ -26,14 +26,14 @@ index 90fe9d3..954d87e 100644
 +++ b/duneuro/eeg/whitney_source_model.hh
 @@ -516,10 +516,8 @@ std::vector<typename BasisFunction::Scalar> MPOInterpolation(const typename Basi
    rhs.tail<dim * dim>() = Eigen::VectorXd::Zero(dim * dim);
- 
+
    // compute interpolation coefficients as the minimum norm solution of lhsMatrix x = rhs
 -  // NOTE : Passing the computation flags as function arguments is deprecated in Eigen 3.4.
 -  // But since at the point of programming this function the Ubuntu package repository installs Eigen 3.3,
 -  // which does not support passing these arguments as template parameters, it will stay for now.
 -  Eigen::VectorXd solution = lhsMatrix.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
-+  // Keep the runtime-flag overload: the Eigen shipped with DUNE here provides jacobiSvd(unsigned), not the jacobiSvd<flags>() template form.
-+  Eigen::VectorXd solution = lhsMatrix.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(rhs);
- 
++  // Eigen 5 removed the runtime-flag overload; use the template-parameter form (Eigen >= 3.4).
++  Eigen::VectorXd solution = lhsMatrix.jacobiSvd<Eigen::ComputeThinU | Eigen::ComputeThinV>().solve(rhs);
+
    // in our multilayer sphere experiments the lhs matrix seemed to always be rank deficient. The SVD then sometimes included very
    // small singular values in the pseudoinverse, leading to what one would call "ghost sources" in the inverse problem. By this we mean

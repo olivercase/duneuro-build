@@ -16,10 +16,10 @@ toolchains:
    using `subIndex(entity, corner, dim)`, which returns the global vertex
    index for any codimension.
 
-2. **`duneuro/eeg/whitney_source_model.hh`** — the `jacobiSvd<flags>()`
-   template-parameter form isn't available with the Eigen version pulled in by
-   Homebrew at build time; kept the runtime-flag overload
-   `jacobiSvd(unsigned int)` instead, which that Eigen version does provide.
+2. **`duneuro/eeg/whitney_source_model.hh`** — the Eigen version pulled in by
+   Homebrew at build time has *removed* the runtime-flag overload
+   `jacobiSvd(unsigned int)`; switched to the `jacobiSvd<flags>()`
+   template-parameter form instead, which that Eigen version requires.
 
 The build scripts `git checkout` the pinned commit, then apply this patch
 (idempotently — re-runs detect an already-patched tree via
