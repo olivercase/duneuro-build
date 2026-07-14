@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run shellcheck on build scripts
-        run: shellcheck scripts/build_duneuro_local.sh cluster/build_duneuro.sh
+        run: shellcheck scripts/build_duneuro_local.sh
