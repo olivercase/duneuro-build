@@ -9,6 +9,10 @@
 set -euo pipefail
 
 REPO="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+# The iNOB pipeline package to install into the build venv. This is a *different*
+# repo from ${REPO} (which is duneuro-build, and only holds the build recipe +
+# patches); by default it is the sibling checkout next to duneuro-build.
+INOB_REPO="${INOB_REPO:-$(cd -- "${REPO}/.." && pwd)/iNOB}"
 BASE="${DUNEURO_BASE:-/Volumes/UCL/duneuro_build}"
 SRC="${BASE}/duneuro-src"
 VENV="${BASE}/venv"
@@ -40,7 +44,12 @@ source "${VENV}/bin/activate"
 python -m pip install --upgrade pip wheel setuptools >/dev/null
 log "installing python deps"
 pip install numpy scipy h5py trimesh pyyaml scikit-image matplotlib >/dev/null
-pip install --no-deps -e "${REPO}" >/dev/null
+if [[ -f "${INOB_REPO}/pyproject.toml" || -f "${INOB_REPO}/setup.py" ]]; then
+    log "installing iNOB package from ${INOB_REPO}"
+    pip install --no-deps -e "${INOB_REPO}" >/dev/null
+else
+    log "WARNING: no installable iNOB package at ${INOB_REPO} — skipping"
+fi
 
 # ── DUNE 2.10 modules ──────────────────────────────────────────────────────
 cd "${SRC}"
